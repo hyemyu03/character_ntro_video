@@ -4,8 +4,35 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>캐릭터 소개 영상</title>
+  <style>
+    body {
+      margin: 0;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    video {
+      width: 100%;
+      max-width: 900px;
+      height: auto;
+      display: block;
+      background: #000;
+    }
+    .tap-text {
+      position: absolute;
+      bottom: 30px;
+      width: 100%;
+      text-align: center;
+      color: #aaa;
+      font-family: sans-serif;
+      font-size: 15px;
+      letter-spacing: 0.5px;
+    }
+  </style>
 </head>
-<body style="margin:0;background:#000;display:flex;align-items:center;justify-content:center;min-height:100vh;">
+<body>
   <video
     id="intro"
     autoplay
@@ -13,19 +40,31 @@
     playsinline
     loop
     preload="auto"
-    style="width:100%;max-width:900px;height:auto;display:block;"
   >
     <source src="./video.mp4" type="video/mp4; codecs='avc1.42E01E, mp4a.40.2'">
     동영상을 재생할 수 없습니다.
   </video>
 
+  <div class="tap-text" id="hint">화면을 터치하면 영상이 재생됩니다</div>
+
   <script>
     const v = document.getElementById('intro');
-    // Safari에서 자동재생이 막힐 때를 대비한 보조 코드
-    v.play().catch(() => {
-      document.body.addEventListener('touchstart', () => v.play(), { once: true });
-      document.body.addEventListener('click', () => v.play(), { once: true });
+    const hint = document.getElementById('hint');
+
+    // 자동재생 시도
+    v.play().then(() => {
+      // 자동재생 성공 시 안내 문구 숨기기
+      hint.style.display = 'none';
+    }).catch(() => {
+      // 자동재생 실패 시 터치 또는 클릭으로 재생 가능하게
+      document.body.addEventListener('touchstart', playVideo, { once: true });
+      document.body.addEventListener('click', playVideo, { once: true });
     });
+
+    function playVideo() {
+      v.play();
+      hint.style.display = 'none';
+    }
   </script>
 </body>
 </html>
