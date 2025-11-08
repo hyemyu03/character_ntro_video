@@ -1,40 +1,31 @@
 <!doctype html>
 <html lang="ko">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Video</title>
-    <style>
-      /* Reset margins and make the page black */
-      html, body {
-        height: 100%;
-        margin: 0;
-        background: #000;
-      }
-      /* Full-bleed video */
-      .wrap {
-        position: fixed;
-        inset: 0;
-        overflow: hidden;
-        display: grid;
-        place-items: center;
-      }
-      video {
-        width: 100vw;
-        height: 100vh;
-        object-fit: cover;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="wrap">
-      <video
-        src="./assets/video.mp4"
-        autoplay
-        muted
-        loop
-        playsinline
-      ></video>
-    </div>
-  </body>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>캐릭터 소개 영상</title>
+</head>
+<body style="margin:0;background:#000;display:flex;align-items:center;justify-content:center;min-height:100vh;">
+  <video
+    id="intro"
+    autoplay
+    muted
+    playsinline
+    loop
+    preload="auto"
+    style="width:100%;max-width:900px;height:auto;display:block;"
+  >
+    <source src="./video.mp4" type="video/mp4; codecs='avc1.42E01E, mp4a.40.2'">
+    동영상을 재생할 수 없습니다.
+  </video>
+
+  <script>
+    const v = document.getElementById('intro');
+    // Safari에서 자동재생이 막힐 때를 대비한 보조 코드
+    v.play().catch(() => {
+      document.body.addEventListener('touchstart', () => v.play(), { once: true });
+      document.body.addEventListener('click', () => v.play(), { once: true });
+    });
+  </script>
+</body>
 </html>
